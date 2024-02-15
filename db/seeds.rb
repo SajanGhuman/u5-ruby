@@ -1,18 +1,21 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+require 'csv'
 Product.destroy_all
-ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'products'") 
-676.times do 
-    Product.create(
-        title: Faker::Commerce.product_name,
-        price: Faker::Commerce.price,
-        stock_quantity: Faker::Number.between(from:1, to:99999)
-    )
+ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'products'")
+
+csv_file = Rails.root.join('db/products.csv')
+csv_data = File.read(csv_file)
+
+products = CSV.parse(csv_data, headers: true)
+
+products.each do |row|
+    category = row['category'].strip
+
+  category = Category.find_or_create_by(name: category)
+
+  Product.create(
+    title: row['name'].strip,
+    price: row['price'].to_f,
+    stock_quantity: row['stock_quantity'].to_i,
+    category: category
+  ) 
 end
