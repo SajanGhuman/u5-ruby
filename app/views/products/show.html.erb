@@ -12,13 +12,11 @@
     </tr>
   </thead>
   <tbody>
-    <% @products.each do |p| %>
       <tr>
-        <td><%= link_to p.title, p %></td>
+        <td><%= @product.title %></td>
         <td>Description</td>
-        <td><%= p.price %></td>
-        <td><%= p.stock_quantity %></td>
+        <td><%= @product.price %></td>
+        <td><%= @product.stock_quantity %></td>
       </tr>
-    <% end %>
   </tbody>
 </table>

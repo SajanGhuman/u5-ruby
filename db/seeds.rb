@@ -7,9 +7,11 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+Product.destroy_all
+ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'products'") 
 676.times do 
     Product.create(
-        title:   Faker::Name.name,
+        title: Faker::Commerce.product_name,
         price: Faker::Commerce.price,
         stock_quantity: Faker::Number.between(from:1, to:99999)
     )
