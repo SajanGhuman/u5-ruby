@@ -9,7 +9,7 @@
 #   end
 676.times do 
     Product.create(
-        title: Faker::Name.name,
+        title:   Faker::Name.name,
         price: Faker::Commerce.price,
         stock_quantity: Faker::Number.between(from:1, to:99999)
     )
